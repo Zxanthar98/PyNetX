@@ -1,0 +1,27 @@
+---
+- name: Get IOS version
+
+  hosts: LAB
+
+  gather_facts: yes
+  
+#  vars_prompt:
+#    - name: "ansible_user"
+#      prompt: "Enter the username"
+#      private: no
+#    - name: "ansible_password"
+#      prompt: "Enter the password"
+#      private: yes
+
+  tasks:
+  
+    - name: Get the IOS version
+      debug:
+        var: ansible_net_version
+
+    - name: Save output to local directory
+      local_action:
+        module: lineinfile
+        dest: "backup/IOS_ver.txt"
+        create: yes
+        line: "{{ inventory_hostname }}: {{ ansible_net_version }}"

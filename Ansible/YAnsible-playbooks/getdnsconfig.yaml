@@ -1,0 +1,19 @@
+---
+- name: Gather the DNS configuration on LFN switches
+
+  hosts: LAB
+
+  gather_facts: no
+
+  tasks:
+
+   - name: show the ip name-severs
+     cisco.ios.command:
+      commands:
+        - show ip name-servers
+     register: name_server_output
+
+   - name:
+     debug:
+      var: name_server_output
+      

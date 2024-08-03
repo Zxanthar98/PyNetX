@@ -1,0 +1,9 @@
+hostname {{ hostname }}
+
+interface GigabitEthernet1/0/1
+ description This was configured by Ansible
+
+interface Vlan10
+ ip address 192.168.1.1 255.255.255.0
+
+ip name-server {{ name_server }}
