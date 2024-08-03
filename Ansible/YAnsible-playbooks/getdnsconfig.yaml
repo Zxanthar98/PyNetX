@@ -1,5 +1,5 @@
 ---
-- name: Gather the DNS configuration on LFN switches
+- name: Gather DNS config
 
   hosts: LAB
 

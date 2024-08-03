@@ -1,4 +1,0 @@
----
-hostname: LABCAT-1DFX-01
-name_server: 10.10.10.4
-ACL_local_LAN_wildcard_mask: 10.10.66.0 0.0.0.255

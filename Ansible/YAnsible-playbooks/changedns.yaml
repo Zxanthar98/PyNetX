@@ -1,5 +1,5 @@
 ---
-- name: Change LFN standard DNS servers on switching infrastructure
+- name: Change DNS servers
 
   hosts: LAB
 
@@ -10,9 +10,8 @@
    - name: Configure standard LFN DNS servers on spoke site switches
      cisco.ios.ios_system:
       name_servers:
-       - 10.10.10.2
-       - 10.24.60.4
-       - 10.25.60.4
+       - {{ GoogleDNS }}
+       - {{ Cloudflare }}
      
    - name: Save running to startup if the playbook made a change
      cisco.ios.ios_config:

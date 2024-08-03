@@ -5,7 +5,7 @@ from requests import session
 #Admin prompt to input Meraki API Key
 API_KEY = input("Please enter the Meraki Dashboard API key: ")
 
-org_id = 90527
+org_id = input("Please enter your organization ID: ")
 
 url = f"https://api.meraki.com/api/v1/organizations/{org_id}"
 

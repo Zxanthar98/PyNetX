@@ -1,4 +1,4 @@
 ---
-hostname: LABCAT-S04Q-02
-name_server: 10.10.10.2
+hostname: LAB-SW2
+name_server: 
 ACL_local_LAN_wildcard_mask: 10.10.99.0 0.0.0.255

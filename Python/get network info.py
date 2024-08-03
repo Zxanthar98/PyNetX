@@ -5,8 +5,9 @@ from pprint import pprint
 #Admin prompt to input Meraki API Key
 API_KEY = input("Please enter the Meraki Dashboard API key: ")
 
+org_id = input("Please enter your organization ID: ")
 
-url = "https://api.meraki.com/api/v1/organizations/90527/networks"
+url = f"https://api.meraki.com/api/v1/organizations/{org_id}/networks"
 
 headers = {
     'X-Cisco-Meraki-API-Key': API_KEY,
