@@ -1,5 +1,5 @@
 ---
-- name: Simple playbook to pull a backup from switch infra and store locally on VM.
+- name: Pull backup from the running-config
 
   hosts: LAB
 
