@@ -17,12 +17,12 @@
 
    - name: Include host-specific variables
      include_vars:
-       file: "{{ inventory_hostname }}.yaml"
+       file: "host_vars/{{ inventory_hostname }}.yaml"
 
    - name: Render a Jinja2 template onto an IOSxe device
      cisco.ios.ios_config:
-       backup: false
-       src: master_config/IOSxe_config.j2
+       src: config_templates/IOSxe_config.j2
        match: line
-#       before:
-#        - no ip access-list standard Ansible-test
+       backup: false
+       backup_options:
+         dir_path: ../Config Backups/

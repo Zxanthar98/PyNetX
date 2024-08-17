@@ -1,0 +1,5 @@
+---
+#LFN DC servers for spoke sites
+LFNDC04: 10.10.10.2
+AZ1WUSDC01: 10.24.60.4
+AZ2SCUSDC01: 10.25.60.4

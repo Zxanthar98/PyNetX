@@ -1,11 +1,14 @@
-import json
 import requests
 from pprint import pprint
+from requests import session
+import getpass
 
 #Admin prompt to input Meraki API Key
-API_KEY = input("Please enter the Meraki Dashboard API key: ")
+API_KEY = getpass.getpass("Please enter the Meraki Dashboard API key: ")
 
-org_id = input("Please enter your organization ID: ")
+Prettylines = ("---------------------------------------")
+
+org_id = 90527
 
 url = f"https://api.meraki.com/api/v1/organizations/{org_id}/networks"
 
@@ -23,23 +26,34 @@ try:
     if response.status_code == 200:
         # Parse JSON response
         data = response.json()
-        
-        print("Here is the different data you can query:")
-        for keys in data:
-            for key in keys.keys():
-                print(key.capitalize())
+    
+    #Checks to see that the list of data isn't empty   
+    if len(data) > 0:    
+        print(f"Here is the different data you can query:\n{Prettylines}")
+        #Pulls data from position zero in the dict
+        first_network_keys = data[0].keys()
+        for key in first_network_keys:
+            print(f"{key.capitalize()}")
         
         while True:
             try:    
-                admin_input = input ("What would you like to know?: ")
-                org_name = [org[admin_input] for org in data]
-                for admin_input in org_name:
+                admin_input = input (f"{Prettylines}\nWhat would you like to know?: ").lower()
+                
+                if admin_input == "exit":
+                    print (admin_input.lower())
+                    print("Exiting prompt now..")
+                    break
+                
+                network_data = [network[admin_input] for network in data]
+                for admin_input in network_data:
                     print(admin_input)
+                    
+                print ("\nType 'exit' if you'd like to leave this prompt..")
                 
             except Exception as ValueError:
                 print ("Please input a valid entry")
-            break   
-        
+                
+    #Print the http error code if other than response code 200                        
     else:
         print ("Error:", response.status_code)
 except Exception as e:

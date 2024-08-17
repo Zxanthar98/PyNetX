@@ -1,5 +1,5 @@
 ---
-- name: Change DNS servers
+- name: Change LFN standard DNS servers on switching infrastructure
 
   hosts: LAB
 
@@ -7,11 +7,16 @@
 
   tasks:
 
+   - name: Include host-specific variables
+     include_vars:
+       file: "group_vars/config_pillars.yaml"
+
    - name: Configure standard LFN DNS servers on spoke site switches
      cisco.ios.ios_system:
       name_servers:
-       - {{ GoogleDNS }}
-       - {{ Cloudflare }}
+       - "{{ LFNDC04 }}" 
+       - "{{ AZ1WUSDC01 }}"
+       - "{{ AZ2SCUSDC01 }}"
      
    - name: Save running to startup if the playbook made a change
      cisco.ios.ios_config:

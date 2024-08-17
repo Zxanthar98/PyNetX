@@ -1,0 +1,36 @@
+---
+- name: Configure LFN standard VTY-Sec ACL
+
+  hosts: LAB
+
+  gather_facts: no
+
+  tasks:
+
+   - name: Include host-specific variables
+     include_vars:
+       file: "host_vars/{{ inventory_hostname }}.yaml"
+
+   - name: Configure VTY-Sec standard ACL
+     cisco.ios.ios_config:
+      lines:
+       - 10 permit 10.10.1.0 0.0.0.255
+       - 15 permit 10.10.80.0 0.0.0.255
+       - 20 permit 10.10.10.0 0.0.0.255
+       - 30 permit 10.10.11.0 0.0.0.255
+       - 40 permit 10.10.22.0 0.0.0.255
+       - 50 permit 10.10.23.0 0.0.0.255
+       - 60 permit 10.10.35.64 0.0.0.31
+       - 70 permit 10.10.35.96 0.0.0.31
+       - 80 permit 10.10.44.0 0.0.0.63
+       - 90 permit 10.10.45.0 0.0.0.255
+       - 100 permit 10.10.46.0 0.0.0.255
+       - 110 permit {{ ACL_local_LAN_wildcard_mask }}
+       - 120 deny   any log
+      parents: ip access-list standard VTY-Sec
+      before: no ip access-list standard VTY-Sec
+      match: exact
+
+#   - name: Save the running config
+#     cisco.ios.ios_config:
+#      save_when: modified

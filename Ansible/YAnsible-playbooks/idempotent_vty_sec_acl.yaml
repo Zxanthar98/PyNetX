@@ -1,0 +1,93 @@
+---
+- name: Create/ enforce VTY-Sec ACL and apply to the VTY lines
+
+  hosts: LAB
+
+  gather_facts: no
+
+  tasks:
+
+    - name: Include host-specific variables
+      include_vars:
+       file: "group_vars/config_pillars.yaml"
+
+    - name: Enforce VTY-Sec ACL configuration
+      cisco.ios.ios_acls:
+        config:
+          - afi: ipv4
+            acls:
+              - name: VTY-Sec
+                acl_type: standard
+                aces:
+                  - grant: permit
+                    sequence: 10
+                    source:
+                      address: 10.10.1.0
+                      wildcard_bits: 0.0.0.255   
+                  - grant: permit
+                    sequence: 20
+                    source:
+                      address: 10.10.80.0
+                      wildcard_bits: 0.0.0.255
+                  - grant: permit
+                    sequence: 30
+                    source: 
+                      address: 10.10.10.0
+                      wildcard_bits: 0.0.0.255
+                  - grant: permit
+                    sequence: 40
+                    source: 
+                      address: 10.10.11.0
+                      wildcard_bits: 0.0.0.255
+                  - grant: permit
+                    sequence: 50
+                    source: 
+                      address: 10.10.22.0
+                      wildcard_bits: 0.0.0.255
+                  - grant: permit
+                    sequence: 60
+                    source: 
+                      address: 10.10.23.0
+                      wildcard_bits: 0.0.0.255
+                  - grant: permit
+                    sequence: 70
+                    source: 
+                      address: 10.10.35.64
+                      wildcard_bits: 0.0.0.31
+                  - grant: permit
+                    sequence: 80
+                    source: 
+                      address: 10.10.35.96
+                      wildcard_bits: 0.0.0.31
+                  - grant: permit
+                    sequence: 90
+                    source: 
+                      address: 10.10.44.0
+                      wildcard_bits: 0.0.0.63
+                  - grant: permit
+                    sequence: 100
+                    source: 
+                      address: 10.10.45.0
+                      wildcard_bits: 0.0.0.255
+                  - grant: permit
+                    sequence: 110
+                    source: 
+                      address: 10.10.46.0
+                      wildcard_bits: 0.0.0.255
+                  - grant: permit
+                    sequence: 120
+                    source: 
+                      address: "{{ ACL_local_LAN }}"
+                      wildcard_bits: 0.0.0.255
+                  - grant: deny
+                    sequence: 130
+                    source: 
+                      any: true                                        
+        state: merged 
+#      run_once: false
+#      register: acl_result
+      
+
+#    - name: Display ACL changes
+#      debug:
+#        var: acl_result
