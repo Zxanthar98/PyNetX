@@ -1,3 +1,0 @@
-export ANSIBLE_NET_USERNAME=cisco
-export ANSIBLE_NET_PASSWORD=cisco
-export ANSIBLE_CONNECTION=local
