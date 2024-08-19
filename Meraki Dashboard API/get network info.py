@@ -8,7 +8,7 @@ API_KEY = getpass.getpass("Please enter the Meraki Dashboard API key: ")
 
 Prettylines = ("---------------------------------------")
 
-org_id = 90527
+org_id = input("Please enter your orgID: ")
 
 url = f"https://api.meraki.com/api/v1/organizations/{org_id}/networks"
 
