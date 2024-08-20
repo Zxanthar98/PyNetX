@@ -42,7 +42,7 @@ try:
         device.load_template(source='string', config=config)
         
         #Commit the changes
-        device.commit_config(1)
+        device.commit_config()
 
 except Exception as e:
     print(f"An error occured: {e}")
