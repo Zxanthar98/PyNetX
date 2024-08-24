@@ -16,7 +16,7 @@ devices = {
         "username": "admin",
         "password": "cisco123"
     },
-        "LABCAT03": {
+    "LABCAT03": {
         "hostname": "10.10.210.4",
         "username": "admin",
         "password": "cisco123"
@@ -38,9 +38,6 @@ for device_name, device_info in devices.items():
         
         #Retrieve device facts
         pprint(device.get_facts())
-        
-        # Retrieve and print environment data such as temp and cpu usage
-        #pprint(device.get_environment())
     
     except Exception as e:
         print(f"An error occurred with device {device_name}: {e}")
