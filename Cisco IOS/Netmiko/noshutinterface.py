@@ -4,8 +4,10 @@ import json
 #Our list of IPs to connect to
 ip_addresses = ['10.10.210.2', '10.10.210.3', '10.10.210.4']
 
+file_path = '/home/jonathan/Documents/Net-Dev-Ops/Cisco IOS/Netmiko/scriptoutputs/noshutinterface.json'
+
 #Opens or creates new file called output.json and correlates output.json with the var 'file'.
-with open('output.json', 'w') as file:
+with open(file_path, 'w') as file:
     
     #Creates 'ip' variable by iterating over list 'ip_addresses'. 
     for ip in ip_addresses:
@@ -13,7 +15,7 @@ with open('output.json', 'w') as file:
             'device_type': 'cisco_ios',
             'host': ip,
             'username': 'admin',
-            'password': 'cisco123',
+            'password': 'cisco123'
         }
 
         #Iterates over switches and uses Netmiko connecthandler to connect over ssh and send commands. 
@@ -22,15 +24,18 @@ with open('output.json', 'w') as file:
             c.enable()
             output = c.send_command('show interface vlan 1', use_textfsm=True)
             hostname = c.send_command('show run | sec hostname', use_textfsm=True)
+            
+            #Optional print statement to display output to the terminal for debugging
             #print(json.dumps(output, indent=4))
             
-            no_shut = ('interface vlan 1', 'no shutdown')
+            #Custom list of commands to complete in order from position 0 to position 1.
+            command_set = ('interface vlan 1', 'no shutdown')
             
             #Iterates over 'output and checks the value of link status and protocol status on each vlan1 interface
             for SVI in output:
                 if SVI['link_status'] == 'administratively down' or ['protocol_status']  == 'down':
                     print(f"{SVI['interface']} is down on {hostname}")
-                    c.send_config_set(no_shut)
+                    c.send_config_set(command_set)
                 else: 
                     print(f"{SVI['interface']} is up on {hostname}")
             
@@ -39,5 +44,6 @@ with open('output.json', 'w') as file:
             
             #Writes variable file into output.json
             file.write('\n\n')
+            
         except Exception as e:
             print(e)
