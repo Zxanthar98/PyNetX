@@ -24,11 +24,14 @@ with open('output.json', 'w') as file:
             hostname = c.send_command('show run | sec hostname', use_textfsm=True)
             #print(json.dumps(output, indent=4))
             
+            no_shut = ('interface vlan 1', 'no shutdown')
+            
+            #Iterates over 'output and checks the value of link status and protocol status on each vlan1 interface
             for SVI in output:
-                #print(SVI['interface'])
-                if SVI['link_status'] or ['protocol_status'] == 'administratively down' or 'down':
+                if SVI['link_status'] == 'administratively down' or ['protocol_status']  == 'down':
                     print(f"{SVI['interface']} is down on {hostname}")
-                if not 'administratively down' or 'down' in SVI:
+                    c.send_config_set(no_shut)
+                else: 
                     print(f"{SVI['interface']} is up on {hostname}")
             
             #Formats variable output and file in json format with an indentation of 4

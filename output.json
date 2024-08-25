@@ -1,8 +1,8 @@
 [
     {
         "interface": "Vlan1",
-        "link_status": "administratively down",
-        "protocol_status": "down",
+        "link_status": "up",
+        "protocol_status": "up",
         "hardware_type": "EtherSVI",
         "mac_address": "08d0.9f7f.5d40",
         "bia": "08d0.9f7f.5d40",
@@ -85,8 +85,8 @@
 [
     {
         "interface": "Vlan1",
-        "link_status": "administratively down",
-        "protocol_status": "down",
+        "link_status": "up",
+        "protocol_status": "up",
         "hardware_type": "EtherSVI",
         "mac_address": "c025.5c87.c9c0",
         "bia": "c025.5c87.c9c0",
