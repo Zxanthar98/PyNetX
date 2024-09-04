@@ -21,18 +21,22 @@ for ip in ip_addresses:
         c.enable()
         output = c.send_command('show interface switchport', use_textfsm=True)
         hostname = c.send_command('show run | sec hostname', use_textfsm=True)
-        mac_table = c.send_command('show mac address-table', use_textfsm=True)
+        #mac_table = c.send_command('show mac address-table', use_textfsm=True)
         
-        #print(json.dumps(mac_table, indent=4))
-         
-        for m in mac_table:  
-            if m['destination_address'] == 'e438.8340.84db':
-                print("uh oh")  
+        #Pulls interface data from output for later use in command payload.
+        data = json.loads(output)
+        interface_name = data["interface"]
+        
+        payload = (f'interface {t}','description test')
+        print(json.dumps(f"Interface Name: {interface_name}", indent=4))
+          
         
         #Comment here
         for t in output:
             if t['mode'] == 'trunk' or  ['admin_mode'] == 'trunk':
                 print(f"Interface {t['interface']} on {hostname} is a trunk.\n")
+            if not ['mode'] == 'trunk' or  ['admin_mode'] == 'trunk':
+                c.send_config_set(payload)
             
         #Saves the running-config to the startup
         #c.save_config()  
