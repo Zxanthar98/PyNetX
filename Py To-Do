@@ -1,3 +1,2 @@
- - Use textfsm with Netmiko to convert raw ios data into json.
- - Manipulate config data using netmiko.
  - Get the napalmupdateconfig.py working and effectively updating config.
+ - Add capability to gettrunkint.py to use port status (trunk or access) & mac found on port to make dynamic decision.

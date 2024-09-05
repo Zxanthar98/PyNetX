@@ -23,7 +23,6 @@ for ip in ip_addresses:
         hostname = c.send_command('show run | sec hostname', use_textfsm=True)
         mac_table = c.send_command('show mac address-table', use_textfsm=True) 
         
-        
         for m in mac_table:
             #mac_address = m['destination_address']
             if m['destination_address'] == mac_list:
