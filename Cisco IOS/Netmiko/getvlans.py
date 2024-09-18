@@ -46,7 +46,6 @@ def process_switch(switch_ip, username, password, vlanid_DB):
                 
         #Creates a list of vlan id's from the data in 'output'
         configured_vlans_id = {v['vlan_id'] for v in output}
-        
         '''
         Example data:
                     {'40', '999', '15', '1', '27', '1004', '43', '12', '1005', '65', '1002', '1003', '41', '42'}
@@ -60,21 +59,21 @@ def process_switch(switch_ip, username, password, vlanid_DB):
                     {'default', 'fddi-default', 'LAB', 'fddinet-default', 'trnet-default', 'eLock-VLAN-27', 'WiFi', 'token-ring-default'}
                     This is a list of all the vlan names on one of  our switches in the lab.        
         '''
-        
-        #print(configure_vlans_name)
 
         #Iterates over our list of vlan id's and checks that list against the configured vlans on each switch in the above data. 
-        for vlan, vlan_name in vlanid_DB, vlanname_DB:
-            vlan_config = (f'vlan {vlan}', f'name {vlan_name}')
-            if vlan not in configured_vlans_id:
+        for vlan_id in vlanid_DB:
+            config_vlan_id = (f'vlan {vlan_id}')
+            if vlan_id not in configured_vlans_id:
                 Pass = False
-                #c.send_config_set(vlan_config)
-                #print(f'{hostname} is missing vlan {vlan} from its vlan DB!!\n')
+                #c.send_config_set(config_vlan_id)
+                #print(f'{hostname} is missing vlan {vlan_id} from its vlan DB!!\n')
+        
+        for vlan_name in output:
+            print (f'{vlan_name['vlan_name']}\n')
                 
         #If the variable 'Pass' hasn't been overwritten to False, this means that the switch has all of the vlans in our static DB configured locally.         
         if Pass:
             print(f'{hostname} passed the vlan DB check.')
-
 
     except Exception as e:
         print(f"Error processing switch {switch_ip}: {e}")
@@ -95,6 +94,13 @@ username = input("Please enter your username: ")
 password = getpass.getpass("Please enter your password: ")
 vlanid_DB = ['2','99']
 vlanname_DB = ['DMZ', 'Servers']
+
+vlanDB = {
+    'vlanid'
+    
+    
+    
+}
 
 #Run the script concurrently for each IP address in our inventory file. 
 with ThreadPoolExecutor(max_workers=len(ip_addresses)) as executor:
