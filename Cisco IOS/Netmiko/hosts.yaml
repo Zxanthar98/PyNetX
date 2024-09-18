@@ -1,0 +1,6 @@
+ALL_SWITCHES:
+  LAB:
+    LABCAT01:
+      HOST_IP: 
+    LABCAT02:
+      HOST_IP: 
