@@ -3,7 +3,6 @@ from netmiko import ConnectHandler
 import getpass
 import datetime
 import yaml
-import json
 
 #Grabs the start time of the script to be subtracted from the endtime variable at the end of the script.
 starttime = datetime.datetime.now()
