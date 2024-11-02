@@ -2,7 +2,9 @@ ALL_SWITCHES:
   LAB:
     LABCAT01:
       HOST_IP: 10.10.210.2
+
     LABCAT02:
       HOST_IP: 10.10.210.3
+      
     LABCAT03:
       HOST_IP: 10.10.210.4

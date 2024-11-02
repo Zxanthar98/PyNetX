@@ -2,9 +2,9 @@ from netmiko import ConnectHandler
 import json
 
 #Our list of IPs to connect to
-ip_addresses = ['10.10.210.2', '10.10.210.3', '10.10.210.4']
+ip_addresses = [' ', ' ', ' ']
 
-file_path = '/home/jonathan/Documents/Net-Dev-Ops/Cisco IOS/Netmiko/scriptoutputs/noshutinterface.json'
+file_path = '/your/file/path'
 
 #Opens or creates new file called output.json and correlates output.json with the var 'file'.
 with open(file_path, 'w') as file:
@@ -14,8 +14,8 @@ with open(file_path, 'w') as file:
         switches = {
             'device_type': 'cisco_ios',
             'host': ip,
-            'username': 'admin',
-            'password': 'cisco123'
+            'username': ' ',
+            'password': ' '
         }
 
         #Iterates over switches and uses Netmiko connecthandler to connect over ssh and send commands. 

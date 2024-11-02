@@ -2,6 +2,15 @@
 This script has a 9 min runtime for four switches
 '''
 
+'''
+ToDo:
+
+1. Match on more complex parameters such as the vlan configured on the interface for more precise script decision making.
+2. Run script using actual 802.1x command payload to simulate real life use case.
+3. Run against production to find all NXU devices to validate accuracy. 
+
+'''
+
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from netmiko import ConnectHandler
 import getpass
@@ -76,16 +85,16 @@ def process_switch(switch_ip, username, password, mac_list):
         print(f"Error processing switch {switch_ip}: {e}")
 
 #Load the inventory file hosts.yaml in the local dir. Str value in load_inventory_yaml is the filepath to the inv file.    
-inventory = load_inventory_yaml('hosts.yaml')
+inventory = load_inventory_yaml('switch_hosts.yaml')
 
 #Ask the user to input the group they want to run the script on
-group_name = input("Please enter the group name (e.g., 'LAB', 'PROD'): ")
+group_name = input("Please enter the group name (e.g., 'LAB', 'CORE, 'ACCESS'): ")
 
 #Declaring our vars for the script
 ip_addresses = iterate_hosts_by_group(inventory, group_name)
 username = input("Please enter your username: ")
 password = getpass.getpass("Please enter your password: ")
-mac_list = ['c81f.ea8c.47f1','b8a4.4f79.c265','fcec.daac.dddf']
+mac_list = ['','']
 
 # Run the script concurrently for each switch IP
 with ThreadPoolExecutor(max_workers=len(ip_addresses)) as executor:
