@@ -98,9 +98,7 @@ for ip in ip_list:
                     specific_route = route
                     break 
             
-            print (json.dumps(specific_route, indent=4))
-            
-            
+            print (json.dumps(specific_route, indent=4))  
     
     
         else:

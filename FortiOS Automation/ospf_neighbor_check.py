@@ -31,9 +31,6 @@ group_name = input("Please enter the group name (e.g., 'LAB', 'PROD_SPOKE, 'PROD
 inventory = load_inventory_yaml('firewall_hosts.yaml')
 ip_list = iterate_hosts_by_group(inventory, group_name)
 
-#List of router ID's that a router should be neighbors with
-#expected_neighbors = ['10.10.150.1', '10.10.162.253', '10.10.165.253', '10.10.80.1', '10.10.1.1', '10.10.43.1']
-
 #A dict of router IDs that we expect a spoke router to have
 expected_neighbors = { 
                        "CORE1": "10.10.150.1",

@@ -1,6 +1,4 @@
 '''
-The intended use of this script is to get a widespread idea of what paths our routers are taking for specific subnets the engineer specifies at runtime.
-This script can help IT staff get a quick understanding of the routing decisions our routers are taking and why.
 
 '''
 
@@ -94,12 +92,6 @@ for ip in ip_list:
             
             #Formats the data in ospf_response into json and stores data in new var ospf_data
             rib_data = rib_response.json()
-
-            '''
-            Searches in the root of the json object "results" and iterates over the list of dicts to gather the keys in the below "for" loop
-            
-            Reference data can be found via https://firewallIP:442/api/v2/monitor/router/ipv4
-            '''
             routes = rib_data.get('results', [])
             
             #Pre-sets specific route to = None, making the logic for a route that doesn't exist work in the script by not finding any matching route and spitting out an error
