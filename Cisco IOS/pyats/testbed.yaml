@@ -1,0 +1,28 @@
+---
+    LABCAT01:
+        type: 'switch'
+        os: 'ios'
+        platform: ios
+        alias: 'helper'
+        credentials:
+            default:
+                username: admin
+                password: cisco123
+        connections:
+            cli:
+                protocol: ssh
+                ip: "10.10.210.2"
+
+    LABCAT02:
+        type: 'switch'
+        os: 'ios'
+        platform: ios
+        alias: 'helper'
+        credentials:
+            default:
+                username: admin
+                password: cisco123
+        connections:
+            cli:
+                protocol: ssh
+                ip: "10.10.210.3"
