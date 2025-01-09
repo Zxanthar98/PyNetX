@@ -1,9 +1,12 @@
 ---
+testbed:
+    name: "Lab Testbed"
+    description: "Testbed for lab switches"
+
+devices:
     LABCAT01:
         type: 'switch'
         os: 'ios'
-        platform: ios
-        alias: 'helper'
         credentials:
             default:
                 username: admin
@@ -11,13 +14,11 @@
         connections:
             cli:
                 protocol: ssh
-                ip: "10.10.210.2"
+                ip: 10.10.210.2
 
     LABCAT02:
         type: 'switch'
         os: 'ios'
-        platform: ios
-        alias: 'helper'
         credentials:
             default:
                 username: admin
@@ -25,4 +26,4 @@
         connections:
             cli:
                 protocol: ssh
-                ip: "10.10.210.3"
+                ip: 10.10.210.3
