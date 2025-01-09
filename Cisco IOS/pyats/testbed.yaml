@@ -1,8 +1,4 @@
 ---
-testbed:
-    name: "Lab Testbed"
-    description: "Testbed for lab switches"
-
 devices:
     LABCAT01:
         type: 'switch'
