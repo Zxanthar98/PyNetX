@@ -11,7 +11,7 @@ devices:
             cli:
                 protocol: ssh
                 ip: 10.10.210.2
-                ssh_options:
+                #ssh_options:
                     #kex: diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
 
     LABCAT02:
@@ -25,5 +25,5 @@ devices:
             cli:
                 protocol: ssh
                 ip: 10.10.210.3
-                ssh_options:
+                #ssh_options:
                     #kex: diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
