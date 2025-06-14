@@ -2,14 +2,14 @@ import requests
 from requests import session
 import getpass
 import json
-from Templates.LifeFlighteLock import eLock_ssid_config
-from Templates.LifeFlightGuest import guest_ssid_config
+from Templates. import eLock_ssid_config
+from Templates. import guest_ssid_config
 
 #Admin prompt to input Meraki API Key
 API_KEY = getpass.getpass("Please enter the Meraki Dashboard API key: ")
 
 org_id_url = "https://api.meraki.com/api/v1/organizations"
-
+E
 headers = {
     'X-Cisco-Meraki-API-Key': API_KEY,
     'Accept': "application-json",
