@@ -1,52 +1,56 @@
 '''
+This script imports a python dict file named "core_routes.py" which is used to validate the reachability of core subnets from spoke routers perspectives.
+The script also checks the interface the traffic is taking to reach a destination subnet, against data in the dictionary to validate if routing is behaving optimally.
 
 '''
-
+from Boilerplate import getassets
 import requests
 from requests import session
 import getpass
-import yaml
+from Boilerplate.core_routes import c_routes
 
 '''
 
-Bug area: No known bugs at this time.
+There is no error handling for routes not found in the RIBs of our firewalls at this time. This could be implemented for further error handling capabilities, but it isn't urgent.
 
 '''
-#Define custom functions to load YAML inventory file from local dir. 
-def load_inventory_yaml(file_path):
-    with open(file_path, 'r') as stream:
-        return yaml.safe_load(stream)
-    
-def iterate_hosts_by_group(inventory, group_name):
-    hosts = []
-    for host, details in inventory['ALL_FIREWALLS'][group_name].items():
-        host_ip = details.get('HOST_IP')
-        hosts.append(host_ip)
-    return hosts
 
 #Creating colors for terminal output using python lib colorama
 GREEN = "\033[92m"
 RED = "\033[91m"
 RESET = "\033[0m"  #Resets color to default
 
-#Use the above functions to load the group_name, inventory, and ip_list vars with data from the firewall_hosts.yaml inventory file
-group_name = input("Please enter the group name (e.g., 'LAB', 'CORE, 'ACCESS'): ")
-inventory = load_inventory_yaml('firewall_hosts.yaml')
-ip_list = iterate_hosts_by_group(inventory, group_name)
+#Prompting user for Hudu API key and base URL
+API_KEY = getpass.getpass("Please enter your Hudu API key: ")
+base_url = "https://lifeflight.huducloud.com"
+#Mapping the asset type to the asset layout ID as defined in Hudu
+asset_type_mapping = {
+    'firewalls': 29,
+    'switches': 30,
+
+}
+
+#Prompting user for asset type (firewalls or switches) and converting to lowercase
+asset_type = input("Are we running this script against firewalls or switches?: ").lower()
+asset_layout_id = asset_type_mapping.get(asset_type)
+#Checking if the asset type is valid
+if asset_layout_id is None:
+    print("Invalid input. Please enter 'firewalls' or 'switches'.")
+    exit(1)
+
+#Calling the get_hudu_assets function to retrieve assets from Hudu
+inventory = getassets.get_hudu_assets(API_KEY, base_url, asset_layout_id)
 
 #Populating username and password at runtime
 username = input("Please enter your username> ")
 password = getpass.getpass("Please enter your password> ")
 
-#Specify which route you'd like to validate, which is the main purpose of this script. 
-target_route = input("\n**Please use CIDR notation**\n\nWhich route would you like to validate?\n\n> ")
-
 #Itereates over list of IP addresses and stores data in var firewall_ip to be used in future api calls
-for ip in ip_list:
-    firewall_ip = ip
+for asset in inventory:
+    firewall_ip = asset['ip_address']
     api_login_url = f"https://{firewall_ip}:442/logincheck"
 
-    # Create a session to maintain the login state
+    #Create a session to maintain the login state
     session = requests.Session()
     headers = {
         'Accept': "application-json",
@@ -77,14 +81,9 @@ for ip in ip_list:
         if status_response.status_code == 200:
             status_data = status_response.json()
             
-            #Outputs entire system info dump into terminal, only useful for debuggin/ testing
-            #print(json.dumps(status_data, indent=4))
-            
             #Looks in the results root of the tree and searches for the key "hostname" to store in var "hostname"
             system_info = status_data.get('results', {})
             hostname = (system_info['hostname'])
-            #print (system_info['hostname'])
-            #print (hostname)
             
             #Starts new get RESTful api call to gather routing information
             api_rib_url = f"https://{firewall_ip}:442/api/v2/monitor/router/ipv4"
@@ -94,26 +93,22 @@ for ip in ip_list:
             rib_data = rib_response.json()
             routes = rib_data.get('results', [])
             
-            #Pre-sets specific route to = None, making the logic for a route that doesn't exist work in the script by not finding any matching route and spitting out an error
-            specific_route = None
-            
-            #Iterates over routes to get the keys from each dict in the list of "results"
-            for route in routes:
-                #Checks that the route queried for is actually in the RIB and breaks
-                if route.get('ip_mask') == target_route:
-                    specific_route = route
-                    break  
-               
-            if specific_route:
-                print("#"*75)
-                print(f'{GREEN}{hostname} route to', f'{specific_route.get('ip_mask')}', f'takes {specific_route.get('interface')} with a metric of {specific_route.get('metric')}{RESET}')    
-                print("#"*75)   
-            
-            else:
-                print("!"*75) 
-                print(f'{RED}Route not found on {hostname}!!{RESET}')
-                print("!"*75)
+            #Iterates over the expected routes in the c_routes module imported | "core_route" is the value part of the dict whereas "route_name" is the value part of the dict.
+            for route_name, core_route in c_routes.items():
+                specific_route = None
+                #Iterates over RIB searching in the value portion of the key "ip_mask" for matches on "core_route" and once a match is found break and continue to print statements.
+                for route in routes:
+                    if route.get('ip_mask') == core_route:
+                        specific_route = route
+                        break
+                    
+                if specific_route.get('interface') == route_name:
+                    print(f'{GREEN}{hostname} route to', f'{specific_route.get('ip_mask')}', f'takes {specific_route.get('interface')} with a metric of {specific_route.get('metric')}{RESET}')    
+                       
                 
+                elif not specific_route.get('interface') == route_name:
+                    print (f'{RED}{hostname} is taking suboptimal path via {specific_route.get('interface')} to get to {specific_route.get('ip_mask')}{RESET}')
+  
         else:
             print("Login failed. Check your credentials or firewall settings.")
     except Exception as e:

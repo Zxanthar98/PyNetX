@@ -2,10 +2,11 @@ import requests
 from requests import session
 import getpass
 import yaml
+from Boilerplate.expected_neigh import expected_neighbors
 
 '''
 
-No known bugs at this time.
+Increased granularity in neighbor check needs to be implemented. False positives possible if a neighbor is in the init or 2-way state. Should check for FULL neighbor.
 
 '''
 
@@ -27,16 +28,9 @@ RED = "\033[91m"
 RESET = "\033[0m"  #Resets color to default
 
 #Use the above functions to load the group_name, inventory, and ip_list vars with data from the firewall_hosts.yaml inventory file
-group_name = input("Please enter the group name (e.g., 'LAB', 'PROD_SPOKE, 'PROD_CORE'): ")
+group_name = input("Please enter the group name (e.g., 'LAB', 'PROD_SPOKE, 'PROD_CORE'): ").upper()
 inventory = load_inventory_yaml('firewall_hosts.yaml')
 ip_list = iterate_hosts_by_group(inventory, group_name)
-
-#A dict of router IDs that we expect a spoke router to have
-expected_neighbors = { 
-                       "CORE1": "10.10.150.1",
-                       "CORE2": "10.10.80.1",
-                       "CORE3": "10.10.162.253"
-}
 
 
 #Populating username and password at runtime
@@ -100,13 +94,16 @@ for ip in ip_list:
             #iterates over output in neighbors and gets the value in key 'router_id' and appends empty list 'router_IDs' with output
             for neighbor in neighbors:
                 router_IDs.append(neighbor['router_id'])
+                if not neighbor['state'] == "Full":
+                    print(f'{hostname}s ospf adjacency with {neighbor} is in the {neighbors["state"]}.')
+
             
             #Populates variable 'missing_router_ids' with missing OSPF neighbors in 'router_IDs' that are checked against 'expected_neighbors' and iterated over with data stored in 'router_id'
             missing_router_ids = [name for name, router_id in expected_neighbors.items() if router_id not in router_IDs]
             
             #If 'missing_router_ids' is empty, hosts pass their neighbor check
             if not missing_router_ids:
-                print("#"*75)
+                #print("#"*75)
                 print(f'{GREEN}{hostname} passed neighbor check.{RESET}')
                 print("#"*75)
             
