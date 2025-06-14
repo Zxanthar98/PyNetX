@@ -1,29 +1,68 @@
 ---
 devices:
-    LABCAT01:
-        type: 'switch'
-        os: 'ios'
+    DEV-R01:
+        connections:
+            cli:
+                ip: 192.168.10.50
+                protocol: ssh
         credentials:
             default:
                 username: admin
                 password: cisco123
+        type: 'iosxe'
+        os: 'iosxe'
+    DEV-R02:
         connections:
             cli:
+                ip: 192.168.10.51
                 protocol: ssh
-                ip: 10.10.210.2
-                #ssh_options:
-                    #kex: diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
-
-    LABCAT02:
-        type: 'switch'
-        os: 'ios'
         credentials:
             default:
                 username: admin
                 password: cisco123
+        type: 'iosxe'
+        os: 'iosxe'
+    DEV-CORE01:
         connections:
             cli:
+                ip: 192.168.90.4
                 protocol: ssh
-                ip: 10.10.210.3
-                #ssh_options:
-                    #kex: diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
+        credentials:
+            default:
+                username: admin
+                password: cisco123
+        type: 'iosxe'
+        os: 'iosxe'
+    DEV-CORE02:
+        connections:
+            cli:
+                ip: 192.168.90.5
+                protocol: ssh
+        credentials:
+            default:
+                username: admin
+                password: cisco123
+        type: 'iosxe'
+        os: 'iosxe'
+    DEV-ACC01:
+        connections:
+            cli:
+                ip: 192.168.90.6
+                protocol: ssh
+        credentials:
+            default:
+                username: admin
+                password: cisco123
+        type: 'iosxe'
+        os: 'iosxe'
+    DEV-ACC02:
+        connections:
+            cli:
+                ip: 192.168.90.7
+                protocol: ssh
+        credentials:
+            default:
+                username: admin
+                password: cisco123
+        type: 'iosxe'
+        os: 'iosxe'
